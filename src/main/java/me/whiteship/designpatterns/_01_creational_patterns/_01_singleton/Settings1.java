@@ -9,7 +9,7 @@ public class Settings1 {
 
     private Settings1() { }
 
-    public static Settings1 getInstance() {
+    public static synchronized Settings1 getInstance() {
         if (instance == null) {
             instance = new Settings1();
         }
