@@ -7,18 +7,20 @@ import java.lang.reflect.InvocationTargetException;
 
 public class App {
 
-    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        // 기존 방식으로 싱글톤 인스턴스 가져오기
-        Settings4 settings = Settings4.getInstance();
+    // serializable을 정의하여 직렬화 역직렬화 가능한 객체로 만든 후 file화 시켜서 생성
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        Settings5 settings = Settings5.INSTANCE;
 
-        // 리플렉션을 사용하여 private 생성자에 접근
-        Constructor<Settings4> constructor = Settings4.class.getDeclaredConstructor();
-        constructor.setAccessible(true); // private 접근 제한 무시 설정
+        Settings5 settings1 = null;
+        try (ObjectOutput out = new ObjectOutputStream(new FileOutputStream("settings.obj"))) {
+            out.writeObject(settings);
+        }
 
-        // private 생성자를 통해 새로운 인스턴스 강제 생성
-        Settings4 settings1 = constructor.newInstance();
+        try (ObjectInput in = new ObjectInputStream(new FileInputStream("settings.obj"))) {
+            settings1 = (Settings5) in.readObject();
+        }
 
-        // 두 인스턴스가 다른 객체인지 확인 (결과: false)
         System.out.println(settings == settings1);
     }
+
 }
