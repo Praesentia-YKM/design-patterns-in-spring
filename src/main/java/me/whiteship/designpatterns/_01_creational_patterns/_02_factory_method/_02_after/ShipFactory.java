@@ -10,10 +10,12 @@ public interface ShipFactory {
         return ship;
     }
 
+    // java 8버전은 못 쓰니까 추상클래스로 구현로직을 옮겨야할 수도 있음
     void sendEmailTo(String email, Ship ship);
 
     Ship createShip();
 
+    // 자바9에서는 인터페이스에 private를 쓸 수 있다
     private void validate(String name, String email) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("배 이름을 지어주세요.");
